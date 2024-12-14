@@ -2,42 +2,48 @@
 
 public class Problem5b {
     public static void main(String[] args) {
-        int[] arr = {5,8,3,6,1,4,2,7};
-        int n = arr.length;
-        int half = 0;
-        if(n%2 == 0) half = n/2 ? half = (n/2)+1;
-        int[] A = new int[half];
-        for(int i = n/2;i<half;i++){
-            A[i] = arr[i];
-        }
-        int[] B = new int[half];
-        for(int i = n/2;i<half;i++){
-            A[i] = arr[i];
-        }
 
-        int[] ans = Sort2(arr,arr.length);
+        int[] arr = {5,8,3,6,1,4,2,7};
+
+        int n = arr.length;
+        int start = 0;
+        int end = n-1;
+        // int mid = (start + (end-start))/2;
+
+        int[] ans = Sort2(arr,start,end);
+
+        // System.out.println();
+
         for(int i = 0;i<ans.length;i++){
             System.out.print(arr[i]+",");
         }
+
     }
 
-    public static int[] Sort2(int[] arr, int n){
-        if (n <= 0) {
+    public static int[] Sort2(int[] arr, int start, int end){
+        if(start >= end){
             return arr;
         }
+        int mid = (start + (end-start))/2;
+        int[] left = Sort2(arr, start, mid);
+        int[] right = Sort2(arr, mid+1, end);
+        for(int i = 0;i<left.length;i++){
+            System.out.print(left[i]+",");
+        }
 
-        A = Sort2(arr, n/2);
-        B = Sort2(B, n/2);
-        return Sort2(arr, n-1);
+        return merge(left,right);
     }
 
-    public static int maxPos(int[] arr, int n){
-        int p = arr[0];
-        int ans = 0;
-        for(int i = 1;i<n;i++){
-            if (p<arr[i]) {
-                ans = i;
-                p = arr[i];
+    public static int[] merge(int[] left,int[] right) {
+        int i = 0;
+        int j = 0;
+        int k = 0;
+        int[] ans = new int[left.length+right.length];
+        while (i < left.length && j < right.length) {
+            if(left[i] > right[j]){
+                ans[k++] = right[j++];
+            }else{
+                ans[k++] = left[i++];
             }
         }
         return ans;
